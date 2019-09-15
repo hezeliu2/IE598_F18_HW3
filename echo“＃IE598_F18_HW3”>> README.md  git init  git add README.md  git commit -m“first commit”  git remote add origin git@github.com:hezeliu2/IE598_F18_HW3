@@ -1,0 +1,153 @@
+import sklearn
+import sys
+import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+import pandas as pd
+import matplotlib.pyplot as plot
+print( 'The scikit learn version is {}.'.format(sklearn.__version__))
+df = pd.read_csv('HY_Universe_corporate bond.csv')
+data = df.dropna()
+print (data.head())
+print (data.tail())
+print(data.describe())
+
+2-1
+xList = []
+labels = []
+for line in data:
+    #split on comma
+    row = data[line]
+    xList.append(row)
+sys.stdout.write("Number of Rows = " + str(len(xList[1])) + '\n')
+sys.stdout.write("Number of Columns = " + str(len(xList)))
+
+2-2
+xList = []
+labels = []
+for line in data:
+    #split on comma
+    row = data[line]
+    xList.append(row)
+nrow = len(xList[1])
+ncol = len(xList)
+type = [0]*3
+colCounts = []
+for col in xList:
+    for row in range(nrow):
+        try:
+            a = float(col[row])
+            if isinstance(a, float):
+                type[0] += 1
+        except ValueError:
+            if len(col[row]) > 0:
+                type[1] += 1
+            else:
+                type[2] += 1
+    colCounts.append(type)
+    type = [0]*3
+    
+sys.stdout.write("Col#" + '\t' + "Number" + '\t' +
+                 "Strings" + '\t ' + "Other\n")
+iCol = 0
+for types in colCounts:
+
+2-3
+data = pd.read_csv('HY_Universe_corporate bond.csv')
+data.drop(data.iloc[:, 0:9], inplace = True, axis = 1)
+data.drop(data.iloc[:, 2:4], inplace = True, axis = 1)
+data.drop(data.iloc[:, 3:4], inplace = True, axis = 1)
+data.drop(data.iloc[:, 4:7], inplace = True, axis = 1)
+data = data.applymap(lambda x: 1 if x == 'Yes' else x)
+data = data.applymap(lambda x: 0 if x == 'No' else x)
+data.dropna()
+print (data.head())
+print (data.shape)
+
+xList = []
+labels = []
+for line in data:
+
+    row = data[line]
+    xList.append(row)
+nrow = len(xList[1])
+ncol = len(xList)
+type = [0]*3
+colCounts = []
+
+col = 2
+colData = [xList[col]]
+colArray = np.array(colData)
+colMean = np.mean(colArray)
+colsd = np.std(colArray)
+sys.stdout.write("Mean = " + '\t' + str(colMean) + '\t\t' +
+            "Standard Deviation = " + '\t ' + str(colsd) + "\n")
+
+ntiles = 4
+percentBdry = []
+for i in range(ntiles+1):
+    percentBdry.append(np.percentile(colArray, i*(100)/ntiles))
+sys.stdout.write("\nBoundaries for 4 Equal Percentiles \n")
+print(percentBdry)
+sys.stdout.write(" \n")
+
+ntiles = 10
+percentBdry = []
+for i in range(ntiles+1):
+    percentBdry.append(np.percentile(colArray, i*(100)/ntiles))
+sys.stdout.write("Boundaries for 10 Equal Percentiles \n")
+print(percentBdry)
+sys.stdout.write(" \n")
+
+col = 4
+colData = xList[4]
+unique = set(colData)
+sys.stdout.write("Unique Label Values \n")
+print(unique)
+
+catDict = dict(zip(list(unique),range(len(unique))))
+catCount = [0]*2
+for elt in colData:
+    catCount[catDict[elt]] += 1
+sys.stdout.write("\nCounts for Each Value\n")
+print(list(unique))
+print(catCount)
+
+2-4
+import scipy
+import pylab
+xList = []
+labels = []
+for line in data:
+
+    row = data[line]
+    xList.append(row)
+nrow = len(xList[1])
+ncol = len(xList)
+type = [0]*3
+colCounts = []
+
+col = 2
+colData = []
+for row in xList[2]:
+    colData.append(float(row))
+scipy.stats.probplot(colData, dist="norm", plot=pylab)
+pylab.show()
+
+2-5
+from pandas.plotting import parallel_coordinates
+features = df[['Issue Date', 'Maturity', 'n_trades']][:20]
+import matplotlib.pyplot as plt
+parallel_coordinates(features, 'n_trades')
+plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.1),ncol=2,fancybox=True,shadow=True)
+plt.show()
+
+from pandas import DataFrame
+corMat = DataFrame(data.corr())
+#visualize correlations using heatmap
+plot.pcolor(corMat)
+plot.show()
+
+print("My name is Heze Liu")
+print("My NetID is: hezeliu2")
+print("I hereby certify that I have read the University policy on Academic Integrity and that I am not in violation.")    
+    
