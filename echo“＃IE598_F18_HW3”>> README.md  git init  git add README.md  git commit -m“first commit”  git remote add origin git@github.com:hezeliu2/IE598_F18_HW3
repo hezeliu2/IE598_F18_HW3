@@ -135,7 +135,7 @@ pylab.show()
 
 2-5
 from pandas.plotting import parallel_coordinates
-features = df[['Issue Date', 'Maturity', 'n_trades']][:20]
+features = df[['Issue Date', 'Maturity', 'n_trades']][:13]
 import matplotlib.pyplot as plt
 parallel_coordinates(features, 'n_trades')
 plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.1),ncol=2,fancybox=True,shadow=True)
